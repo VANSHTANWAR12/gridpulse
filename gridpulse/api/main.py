@@ -590,9 +590,12 @@ def api_get_learning_analytics():
     }
 
 # Mount frontend web dashboard static files
-if os.path.exists("frontend/dist"):
-    app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="web")
-elif os.path.exists("web"):
-    app.mount("/", StaticFiles(directory="web", html=True), name="web")
+if os.environ.get("SERVE_STATIC_ROOT", "true").lower() == "true":
+    if os.path.exists("frontend/dist"):
+        app.mount("/", StaticFiles(directory="frontend/dist", html=True), name="web")
+    elif os.path.exists("web"):
+        app.mount("/", StaticFiles(directory="web", html=True), name="web")
+    else:
+        print("Warning: Static dashboard directories ('frontend/dist' or 'web') not found. Static dashboard won't be served directly.")
 else:
-    print("Warning: Static dashboard directories ('frontend/dist' or 'web') not found. Static dashboard won't be served directly.")
+    print("Static root serving is disabled via SERVE_STATIC_ROOT environment variable.")

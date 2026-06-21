@@ -11,4 +11,6 @@ services:
         value: 3.10.12
       - key: GEMINI_API_KEY
         sync: false
+      - key: SERVE_STATIC_ROOT
+        value: "false"
     plan: free
