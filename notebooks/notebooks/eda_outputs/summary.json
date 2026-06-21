@@ -1,0 +1,10 @@
+{
+  "shape": [
+    8173,
+    47
+  ],
+  "event_type_counts": {
+    "unplanned": 7706,
+    "planned": 467
+  }
+}

@@ -1,0 +1,48 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Secrets & Environment Configuration
+.env
+.env.*
+.env.local
+
+
+# Python Bytecode & Cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Local Database Files
+*.db
+*.sqlite3
+
+# Serialized ML Model binaries
+gridpulse/models/*.joblib
+
+# IDE & Editor Configs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS Files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# React compiled build assets
+web/assets/
+web/favicon.svg
+web/icons.svg
+
+# Node dependencies
+node_modules/

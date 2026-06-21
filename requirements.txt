@@ -1,0 +1,18 @@
+pandas
+numpy
+matplotlib
+seaborn
+folium
+geopandas
+scikit-learn
+h3
+fastapi
+uvicorn
+pyproj
+shapely
+joblib
+google-generativeai
+xgboost
+lightgbm
+catboost
+# sentence-transformers (Uncomment for local training. Disabled for Render Free tier 512MB RAM compatibility)
