@@ -22,6 +22,7 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 
 const BENGALURU_CENTER = [77.5946, 12.9785];
 const MAPTILER_KEY = import.meta.env.VITE_MAPTILER_KEY || '';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 function getSeverityColor(priority = 'Low', severity = 0) {
   const clean = priority.toLowerCase();
@@ -112,7 +113,7 @@ export default function PreEventPlanner({ t, activeLang, is3D }) {
   // Fetch all scheduled events
   const fetchEvents = async () => {
     try {
-      const res = await fetch('/api/planned-events');
+      const res = await fetch(`${API_URL}/api/planned-events`);
       if (res.ok) {
         const data = await res.json();
         setEvents(data);
@@ -356,7 +357,7 @@ export default function PreEventPlanner({ t, activeLang, is3D }) {
     if (!event) return;
     setLoadingSim(true);
     try {
-      const url = `/api/forecast-propagation?latitude=${event.latitude}&longitude=${event.longitude}&event_cause=${event.event_cause}&priority=${event.priority}&time_step_hours=${step}&duration_hours=${event.duration_hours}&attendance=${event.attendance || 1000}`;
+      const url = `${API_URL}/api/forecast-propagation?latitude=${event.latitude}&longitude=${event.longitude}&event_cause=${event.event_cause}&priority=${event.priority}&time_step_hours=${step}&duration_hours=${event.duration_hours}&attendance=${event.attendance || 1000}`;
       const res = await fetch(url);
       if (res.ok) {
         const data = await res.json();
@@ -415,7 +416,7 @@ export default function PreEventPlanner({ t, activeLang, is3D }) {
     };
 
     try {
-      const res = await fetch('/api/planned-events', {
+      const res = await fetch(`${API_URL}/api/planned-events`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -443,7 +444,7 @@ export default function PreEventPlanner({ t, activeLang, is3D }) {
     e.stopPropagation();
     if (!confirm("Are you sure you want to remove this planned event?")) return;
     try {
-      const res = await fetch(`/api/planned-events/${eventId}`, {
+      const res = await fetch(`${API_URL}/api/planned-events/${eventId}`, {
         method: 'DELETE'
       });
       if (res.ok) {
@@ -519,7 +520,7 @@ export default function PreEventPlanner({ t, activeLang, is3D }) {
       for (let hour = 0; hour <= totalHours; hour++) {
         setPdfProgress(hour);
         
-        const url = `/api/forecast-propagation?latitude=${selectedEvent.latitude}&longitude=${selectedEvent.longitude}&event_cause=${selectedEvent.event_cause}&priority=${selectedEvent.priority}&time_step_hours=${hour}&duration_hours=${selectedEvent.duration_hours}&attendance=${selectedEvent.attendance || 1000}`;
+        const url = `${API_URL}/api/forecast-propagation?latitude=${selectedEvent.latitude}&longitude=${selectedEvent.longitude}&event_cause=${selectedEvent.event_cause}&priority=${selectedEvent.priority}&time_step_hours=${hour}&duration_hours=${selectedEvent.duration_hours}&attendance=${selectedEvent.attendance || 1000}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Failed to fetch forecast for Hour ${hour}`);
         const sim = await res.json();

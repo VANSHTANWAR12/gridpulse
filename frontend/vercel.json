@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:path*",
-      "destination": "https://gridpulse-backend.onrender.com/api/:path*"
+      "destination": "https://gridpulse-qg9h.onrender.com/api/:path*"
     }
   ]
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Shield, Key, User, Globe, AlertCircle, CheckCircle, Eye, EyeOff, Fingerprint } from 'lucide-react';
 import { translations } from '../translations';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 export default function LoginScreen({ activeLang, setActiveLang, onLoginSuccess }) {
   const [isRegister, setIsRegister] = useState(false);
@@ -71,7 +72,7 @@ export default function LoginScreen({ activeLang, setActiveLang, onLoginSuccess 
     setLoading(true);
     try {
       if (isRegister) {
-        const res = await fetch('/api/auth/register', {
+        const res = await fetch(`${API_URL}/api/auth/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: cleanUsername, password })
@@ -86,7 +87,7 @@ export default function LoginScreen({ activeLang, setActiveLang, onLoginSuccess 
           setConfirmPassword('');
         }
       } else {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ username: cleanUsername, password })

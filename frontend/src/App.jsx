@@ -9,6 +9,7 @@ import CopilotChat from './components/CopilotChat';
 import PreEventPlanner from './components/PreEventPlanner';
 import PostEventInsights from './components/PostEventInsights';
 import LoginScreen from './components/LoginScreen';
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 
 export default function App() {
@@ -36,7 +37,7 @@ export default function App() {
       if (!target) return;
 
       const scrollTop = target.scrollTop;
-      
+
       // Always show navbar at the very top of the page (within 10px) to prevent overlap
       if (scrollTop < 10) {
         setShowNavbar(true);
@@ -47,7 +48,7 @@ export default function App() {
       // Scrolling Down - Hide immediately to prevent overlap
       if (scrollTop > lastScrollTop) {
         setShowNavbar(false);
-      } 
+      }
       // Scrolling Up - Show with small buffer for smooth UX
       else if (scrollTop < lastScrollTop - 5) {
         setShowNavbar(true);
@@ -71,7 +72,7 @@ export default function App() {
         return;
       }
       try {
-        const res = await fetch('/api/auth/me', {
+        const res = await fetch(`${API_URL}/api/auth/me`, {
           headers: {
             'X-Session-Token': token
           }
@@ -95,7 +96,7 @@ export default function App() {
     const token = localStorage.getItem('gridpulse_token');
     if (token) {
       try {
-        await fetch('/api/auth/logout', {
+        await fetch(`${API_URL}/api/auth/logout`, {
           method: 'POST',
           headers: {
             'X-Session-Token': token
@@ -108,7 +109,7 @@ export default function App() {
     localStorage.removeItem('gridpulse_token');
     setUser(null);
   };
-  
+
   // Ref to store current selectedIncident to avoid stale closures in polling interval
   const selectedIncidentRef = useRef(null);
   selectedIncidentRef.current = selectedIncident;
@@ -144,7 +145,7 @@ export default function App() {
   // Fetch Incidents
   const fetchData = async () => {
     try {
-      const res = await fetch('/api/events?status=active', {
+      const res = await fetch(`${API_URL}/api/events?status=active`, {
         headers: {
           'X-Session-Token': localStorage.getItem('gridpulse_token') || ''
         }
@@ -152,7 +153,7 @@ export default function App() {
       if (res.ok) {
         const data = await res.json();
         setActiveIncidents(data);
-        
+
         // Sync selected incident details from backend response if one is active
         const currentSelected = selectedIncidentRef.current;
         if (currentSelected) {
@@ -188,7 +189,7 @@ export default function App() {
         if (res.ok) {
           const data = await res.json();
           const current = data.current;
-          
+
           // Weather interpretation based on WMO code
           let condition = 'Clear';
           const code = current.weather_code;
@@ -197,13 +198,13 @@ export default function App() {
           else if (code >= 95) condition = 'Thunderstorm';
           else if (code >= 1 && code <= 3) condition = 'Partly Cloudy';
           else if (code >= 45 && code <= 48) condition = 'Foggy';
-          
+
           // Calculate ML weather severity multiplier
           let multiplier = 1.0;
           if (condition === 'Drizzle/Rain') multiplier = 1.25;
           else if (condition === 'Thunderstorm') multiplier = 1.45;
           else if (condition === 'Foggy') multiplier = 1.15;
-          
+
           setWeather({
             temp: Math.round(current.temperature_2m),
             humidity: current.relative_humidity_2m,
@@ -232,7 +233,7 @@ export default function App() {
 
   // Calculate stats
   const peakSeverity = activeIncidents.length === 0
-    ? 0 
+    ? 0
     : Math.max(...activeIncidents.map(e => e.severity_score || 0));
   const totalManpower = activeIncidents.reduce((sum, e) => sum + (e.manpower_needed || 0), 0);
   const totalBarricades = activeIncidents.reduce((sum, e) => sum + (e.barricades_needed || 0), 0);
@@ -247,10 +248,10 @@ export default function App() {
 
   if (!user) {
     return (
-      <LoginScreen 
-        activeLang={activeLang} 
-        setActiveLang={setActiveLang} 
-        onLoginSuccess={(userData) => setUser(userData)} 
+      <LoginScreen
+        activeLang={activeLang}
+        setActiveLang={setActiveLang}
+        onLoginSuccess={(userData) => setUser(userData)}
       />
     );
   }
@@ -306,14 +307,14 @@ export default function App() {
               activeIncidents.map(incident => {
                 const priorityClass = `badge-${incident.priority.toLowerCase()}`;
                 const isActive = selectedIncident && selectedIncident.id === incident.id;
-                
+
                 // Simple elapsed time calculation
                 const start = new Date(incident.start_datetime);
                 const diffMins = Math.floor((new Date() - start) / 60000);
-                const timeStr = diffMins <= 0 
-                  ? (activeLang === 'kn' ? 'ಈಗಷ್ಟೇ' : (activeLang === 'hi' ? 'अभी' : 'Just now')) 
+                const timeStr = diffMins <= 0
+                  ? (activeLang === 'kn' ? 'ಈಗಷ್ಟೇ' : (activeLang === 'hi' ? 'अभी' : 'Just now'))
                   : (activeLang === 'kn' ? `${diffMins} ನಿಮಿಷ ಹಿಂದೆ` : (activeLang === 'hi' ? `${diffMins} मिनट पहले` : `${diffMins}m ago`));
-                
+
                 return (
                   <motion.div
                     key={incident.id}
@@ -393,7 +394,7 @@ export default function App() {
             <span>{t('nav-monitor')}</span>
             {activeTab === 'monitor' && <motion.div layoutId="tab-indicator" className="tab-indicator" />}
           </button>
-          
+
           <button
             onClick={() => setActiveTab('analytics')}
             className={`nav-tab-btn ${activeTab === 'analytics' ? 'active' : ''}`}
@@ -402,7 +403,7 @@ export default function App() {
             <span>{t('nav-analytics')}</span>
             {activeTab === 'analytics' && <motion.div layoutId="tab-indicator" className="tab-indicator" />}
           </button>
-          
+
           <button
             onClick={() => setActiveTab('weather')}
             className={`nav-tab-btn ${activeTab === 'weather' ? 'active' : ''}`}
@@ -411,7 +412,7 @@ export default function App() {
             <span>{t('nav-weather')}</span>
             {activeTab === 'weather' && <motion.div layoutId="tab-indicator" className="tab-indicator" />}
           </button>
-          
+
           <button
             onClick={() => setActiveTab('planner')}
             className={`nav-tab-btn ${activeTab === 'planner' ? 'active' : ''}`}
@@ -420,7 +421,7 @@ export default function App() {
             <span>{t('nav-planner')}</span>
             {activeTab === 'planner' && <motion.div layoutId="tab-indicator" className="tab-indicator" />}
           </button>
-          
+
           <button
             onClick={() => setActiveTab('post-event')}
             className={`nav-tab-btn ${activeTab === 'post-event' ? 'active' : ''}`}
@@ -443,7 +444,7 @@ export default function App() {
                 transition={{ duration: 0.2 }}
                 className="tab-pane"
               >
-                <MapMonitor 
+                <MapMonitor
                   activeIncidents={activeIncidents}
                   selectedIncident={selectedIncident}
                   setSelectedIncident={setSelectedIncident}
@@ -465,7 +466,7 @@ export default function App() {
                 transition={{ duration: 0.2 }}
                 className="tab-pane"
               >
-                <AnalyticsPanel 
+                <AnalyticsPanel
                   activeIncidents={activeIncidents}
                   selectedIncident={selectedIncident}
                   t={t}
@@ -484,7 +485,7 @@ export default function App() {
                 transition={{ duration: 0.2 }}
                 className="tab-pane"
               >
-                <WeatherDashboard 
+                <WeatherDashboard
                   weather={weather}
                   t={t}
                   activeLang={activeLang}
@@ -501,7 +502,7 @@ export default function App() {
                 transition={{ duration: 0.2 }}
                 className="tab-pane"
               >
-                <PreEventPlanner 
+                <PreEventPlanner
                   t={t}
                   activeLang={activeLang}
                   is3D={is3D}
@@ -518,7 +519,7 @@ export default function App() {
                 transition={{ duration: 0.2 }}
                 className="tab-pane"
               >
-                <PostEventInsights 
+                <PostEventInsights
                   t={t}
                   activeLang={activeLang}
                 />
