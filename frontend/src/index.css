@@ -4869,3 +4869,14 @@ input::placeholder {
 }
 
 
+
+/* FIX: Hide left border on sidebar to prevent blue line on screen edge */
+.sidebar {
+  border-left: none !important;
+}
+
+
+/* Ensure no left borders create the blue line effect */
+.main-header, .nav-tab-container, .details-card, .sidebar {
+  border-left: none !important;
+}
