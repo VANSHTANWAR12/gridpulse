@@ -10,6 +10,7 @@ import PreEventPlanner from './components/PreEventPlanner';
 import PostEventInsights from './components/PostEventInsights';
 import LoginScreen from './components/LoginScreen';
 import BackgroundLayer from './components/BackgroundLayer';
+import EmergencyCorridorCenter from './components/EmergencyCorridorCenter';
 import { getApiUrl } from './api';
 
 
@@ -432,6 +433,16 @@ export default function App() {
             <span>{t('nav-post-event')}</span>
             {activeTab === 'post-event' && <motion.div layoutId="tab-indicator" className="tab-indicator" />}
           </button>
+
+          <button
+            onClick={() => setActiveTab('emergency')}
+            className={`nav-tab-btn ${activeTab === 'emergency' ? 'active' : ''}`}
+            style={{ color: activeTab === 'emergency' ? 'var(--accent-red)' : undefined }}
+          >
+            <AlertTriangle size={14} />
+            <span>Emergency AI</span>
+            {activeTab === 'emergency' && <motion.div layoutId="tab-indicator" className="tab-indicator" style={{ backgroundColor: 'var(--accent-red)', boxShadow: '0 0 8px var(--accent-red)' }} />}
+          </button>
         </div>
 
         {/* Dynamic Tab Pane Render using Framer Motion Transitions */}
@@ -524,6 +535,23 @@ export default function App() {
                 <PostEventInsights
                   t={t}
                   activeLang={activeLang}
+                />
+              </motion.div>
+            )}
+
+            {activeTab === 'emergency' && (
+              <motion.div
+                key="emergency"
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.2 }}
+                className="tab-pane"
+              >
+                <EmergencyCorridorCenter
+                  t={t}
+                  activeLang={activeLang}
+                  is3D={is3D}
                 />
               </motion.div>
             )}

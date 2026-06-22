@@ -1,0 +1,1562 @@
+[
+  {
+    "id": "H001",
+    "name": "Bowring - Yelahanka Branch 4",
+    "type": "hospital",
+    "lat": 13.102546,
+    "lng": 77.619343,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "H002",
+    "name": "Bowring - HSR Layout Branch 3",
+    "type": "hospital",
+    "lat": 12.925556,
+    "lng": 77.626088,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "T003",
+    "name": "Trauma Center - Rajajinagar",
+    "type": "trauma_center",
+    "lat": 12.993974,
+    "lng": 77.573657,
+    "zone": "Rajajinagar"
+  },
+  {
+    "id": "T004",
+    "name": "Trauma Center - Koramangala",
+    "type": "trauma_center",
+    "lat": 12.909652,
+    "lng": 77.627346,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H005",
+    "name": "KIMS - Indiranagar Branch 1",
+    "type": "hospital",
+    "lat": 12.989336,
+    "lng": 77.667358,
+    "zone": "Indiranagar"
+  },
+  {
+    "id": "H006",
+    "name": "Aster CMI - Whitefield Branch 2",
+    "type": "hospital",
+    "lat": 12.96544,
+    "lng": 77.723818,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "H007",
+    "name": "Sakra - Whitefield Branch 4",
+    "type": "hospital",
+    "lat": 12.949968,
+    "lng": 77.770579,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "H008",
+    "name": "Apollo - Banashankari Branch 1",
+    "type": "hospital",
+    "lat": 12.942123,
+    "lng": 77.559176,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "H009",
+    "name": "Fortis - Bellandur Branch 1",
+    "type": "hospital",
+    "lat": 12.927303,
+    "lng": 77.662581,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "H010",
+    "name": "Columbia Asia - Banashankari Branch 2",
+    "type": "hospital",
+    "lat": 12.899322,
+    "lng": 77.581702,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "H011",
+    "name": "Columbia Asia - KR Puram Branch 4",
+    "type": "hospital",
+    "lat": 12.995824,
+    "lng": 77.716566,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H012",
+    "name": "Columbia Asia - Electronic City Branch 4",
+    "type": "hospital",
+    "lat": 12.818945,
+    "lng": 77.694747,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "T013",
+    "name": "Trauma Center - Bellandur",
+    "type": "trauma_center",
+    "lat": 12.905148,
+    "lng": 77.665158,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "H014",
+    "name": "Sakra - Hebbal Branch 4",
+    "type": "hospital",
+    "lat": 13.023111,
+    "lng": 77.581024,
+    "zone": "Hebbal"
+  },
+  {
+    "id": "H015",
+    "name": "Cloudnine - Banashankari Branch 4",
+    "type": "hospital",
+    "lat": 12.917191,
+    "lng": 77.571969,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "H016",
+    "name": "Aster CMI - Yelahanka Branch 5",
+    "type": "hospital",
+    "lat": 13.092269,
+    "lng": 77.594307,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "H017",
+    "name": "Narayana - Koramangala Branch 3",
+    "type": "hospital",
+    "lat": 12.940797,
+    "lng": 77.624648,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "T018",
+    "name": "Trauma Center - Koramangala",
+    "type": "trauma_center",
+    "lat": 12.947777,
+    "lng": 77.611037,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H019",
+    "name": "Columbia Asia - KR Puram Branch 1",
+    "type": "hospital",
+    "lat": 12.987408,
+    "lng": 77.687716,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H020",
+    "name": "Aster CMI - Whitefield Branch 4",
+    "type": "hospital",
+    "lat": 12.972155,
+    "lng": 77.735585,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "H021",
+    "name": "KIMS - Silk Board Branch 2",
+    "type": "hospital",
+    "lat": 12.913111,
+    "lng": 77.625296,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "T022",
+    "name": "Trauma Center - Koramangala",
+    "type": "trauma_center",
+    "lat": 12.926326,
+    "lng": 77.649159,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H023",
+    "name": "Apollo - KR Puram Branch 1",
+    "type": "hospital",
+    "lat": 13.017484,
+    "lng": 77.701505,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H024",
+    "name": "KIMS - Banashankari Branch 4",
+    "type": "hospital",
+    "lat": 12.908783,
+    "lng": 77.580229,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "H025",
+    "name": "Aster CMI - Whitefield Branch 1",
+    "type": "hospital",
+    "lat": 12.981159,
+    "lng": 77.736099,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "H026",
+    "name": "KIMS - Rajajinagar Branch 5",
+    "type": "hospital",
+    "lat": 12.985462,
+    "lng": 77.539936,
+    "zone": "Rajajinagar"
+  },
+  {
+    "id": "H027",
+    "name": "Victoria - Silk Board Branch 3",
+    "type": "hospital",
+    "lat": 12.906312,
+    "lng": 77.625041,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "H028",
+    "name": "Fortis - Whitefield Branch 5",
+    "type": "hospital",
+    "lat": 12.99061,
+    "lng": 77.740596,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "H029",
+    "name": "Manipal - Rajajinagar Branch 4",
+    "type": "hospital",
+    "lat": 13.015619,
+    "lng": 77.531941,
+    "zone": "Rajajinagar"
+  },
+  {
+    "id": "H030",
+    "name": "Aster CMI - Banashankari Branch 4",
+    "type": "hospital",
+    "lat": 12.900537,
+    "lng": 77.585323,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "H031",
+    "name": "Narayana - HSR Layout Branch 1",
+    "type": "hospital",
+    "lat": 12.908999,
+    "lng": 77.633626,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "T032",
+    "name": "Trauma Center - Koramangala",
+    "type": "trauma_center",
+    "lat": 12.922718,
+    "lng": 77.632415,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "T033",
+    "name": "Trauma Center - Koramangala",
+    "type": "trauma_center",
+    "lat": 12.913608,
+    "lng": 77.605158,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H034",
+    "name": "KIMS - KR Puram Branch 5",
+    "type": "hospital",
+    "lat": 13.011488,
+    "lng": 77.674455,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H035",
+    "name": "Victoria - KR Puram Branch 5",
+    "type": "hospital",
+    "lat": 13.028361,
+    "lng": 77.696532,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H036",
+    "name": "Apollo - Banashankari Branch 4",
+    "type": "hospital",
+    "lat": 12.931421,
+    "lng": 77.594943,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "T037",
+    "name": "Trauma Center - Silk Board",
+    "type": "trauma_center",
+    "lat": 12.903447,
+    "lng": 77.646494,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "T038",
+    "name": "Trauma Center - Bellandur",
+    "type": "trauma_center",
+    "lat": 12.918172,
+    "lng": 77.698329,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "H039",
+    "name": "Cloudnine - Yelahanka Branch 3",
+    "type": "hospital",
+    "lat": 13.127595,
+    "lng": 77.596884,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "T040",
+    "name": "Trauma Center - Marathahalli",
+    "type": "trauma_center",
+    "lat": 12.978423,
+    "lng": 77.723596,
+    "zone": "Marathahalli"
+  },
+  {
+    "id": "H041",
+    "name": "Victoria - Silk Board Branch 4",
+    "type": "hospital",
+    "lat": 12.905164,
+    "lng": 77.643492,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "H042",
+    "name": "Cloudnine - KR Puram Branch 4",
+    "type": "hospital",
+    "lat": 13.033557,
+    "lng": 77.688866,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H043",
+    "name": "Apollo - Malleshwaram Branch 2",
+    "type": "hospital",
+    "lat": 13.025946,
+    "lng": 77.552867,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "H044",
+    "name": "Narayana - Jayanagar Branch 4",
+    "type": "hospital",
+    "lat": 12.950471,
+    "lng": 77.601578,
+    "zone": "Jayanagar"
+  },
+  {
+    "id": "T045",
+    "name": "Trauma Center - Koramangala",
+    "type": "trauma_center",
+    "lat": 12.939506,
+    "lng": 77.641665,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H046",
+    "name": "Fortis - KR Puram Branch 2",
+    "type": "hospital",
+    "lat": 13.028489,
+    "lng": 77.688224,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H047",
+    "name": "KIMS - Koramangala Branch 1",
+    "type": "hospital",
+    "lat": 12.958584,
+    "lng": 77.599645,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H048",
+    "name": "Bowring - Electronic City Branch 2",
+    "type": "hospital",
+    "lat": 12.862098,
+    "lng": 77.686878,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "T049",
+    "name": "Trauma Center - HSR Layout",
+    "type": "trauma_center",
+    "lat": 12.906273,
+    "lng": 77.632213,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "H050",
+    "name": "Columbia Asia - KR Puram Branch 4",
+    "type": "hospital",
+    "lat": 12.991967,
+    "lng": 77.674055,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H051",
+    "name": "Apollo - Rajajinagar Branch 3",
+    "type": "hospital",
+    "lat": 13.025104,
+    "lng": 77.57187,
+    "zone": "Rajajinagar"
+  },
+  {
+    "id": "H052",
+    "name": "Columbia Asia - KR Puram Branch 1",
+    "type": "hospital",
+    "lat": 13.030695,
+    "lng": 77.690168,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H053",
+    "name": "Narayana - Malleshwaram Branch 5",
+    "type": "hospital",
+    "lat": 12.999866,
+    "lng": 77.571492,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "T054",
+    "name": "Trauma Center - HSR Layout",
+    "type": "trauma_center",
+    "lat": 12.934447,
+    "lng": 77.650124,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "T055",
+    "name": "Trauma Center - Rajajinagar",
+    "type": "trauma_center",
+    "lat": 13.00486,
+    "lng": 77.547072,
+    "zone": "Rajajinagar"
+  },
+  {
+    "id": "T056",
+    "name": "Trauma Center - Electronic City",
+    "type": "trauma_center",
+    "lat": 12.845912,
+    "lng": 77.688649,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "H057",
+    "name": "Manipal - Bellandur Branch 5",
+    "type": "hospital",
+    "lat": 12.947718,
+    "lng": 77.687503,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "H058",
+    "name": "Apollo - Electronic City Branch 2",
+    "type": "hospital",
+    "lat": 12.833413,
+    "lng": 77.675195,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "H059",
+    "name": "KIMS - Whitefield Branch 3",
+    "type": "hospital",
+    "lat": 12.951505,
+    "lng": 77.765537,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "H060",
+    "name": "Aster CMI - Koramangala Branch 2",
+    "type": "hospital",
+    "lat": 12.929521,
+    "lng": 77.630316,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H061",
+    "name": "Aster CMI - Bellandur Branch 2",
+    "type": "hospital",
+    "lat": 12.928125,
+    "lng": 77.669646,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "H062",
+    "name": "Sakra - Yelahanka Branch 4",
+    "type": "hospital",
+    "lat": 13.095875,
+    "lng": 77.610684,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "H063",
+    "name": "Aster CMI - Banashankari Branch 2",
+    "type": "hospital",
+    "lat": 12.9065,
+    "lng": 77.550712,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "H064",
+    "name": "KIMS - Jayanagar Branch 1",
+    "type": "hospital",
+    "lat": 12.905802,
+    "lng": 77.594678,
+    "zone": "Jayanagar"
+  },
+  {
+    "id": "H065",
+    "name": "Narayana - Yelahanka Branch 1",
+    "type": "hospital",
+    "lat": 13.073709,
+    "lng": 77.578361,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "T066",
+    "name": "Trauma Center - Malleshwaram",
+    "type": "trauma_center",
+    "lat": 12.983443,
+    "lng": 77.571116,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "H067",
+    "name": "Manipal - Koramangala Branch 4",
+    "type": "hospital",
+    "lat": 12.954505,
+    "lng": 77.651482,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H068",
+    "name": "Apollo - KR Puram Branch 4",
+    "type": "hospital",
+    "lat": 13.011384,
+    "lng": 77.694845,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H069",
+    "name": "Aster CMI - Hebbal Branch 5",
+    "type": "hospital",
+    "lat": 13.044363,
+    "lng": 77.60086,
+    "zone": "Hebbal"
+  },
+  {
+    "id": "T070",
+    "name": "Trauma Center - Koramangala",
+    "type": "trauma_center",
+    "lat": 12.942772,
+    "lng": 77.635463,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H071",
+    "name": "Sakra - KR Puram Branch 4",
+    "type": "hospital",
+    "lat": 12.991252,
+    "lng": 77.717465,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H072",
+    "name": "Apollo - Malleshwaram Branch 1",
+    "type": "hospital",
+    "lat": 13.029245,
+    "lng": 77.590928,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "H073",
+    "name": "Apollo - Malleshwaram Branch 4",
+    "type": "hospital",
+    "lat": 13.026331,
+    "lng": 77.53965,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "T074",
+    "name": "Trauma Center - Whitefield",
+    "type": "trauma_center",
+    "lat": 12.981483,
+    "lng": 77.757401,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "H075",
+    "name": "Victoria - Silk Board Branch 5",
+    "type": "hospital",
+    "lat": 12.92927,
+    "lng": 77.645827,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "H076",
+    "name": "Aster CMI - Yelahanka Branch 3",
+    "type": "hospital",
+    "lat": 13.094598,
+    "lng": 77.600985,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "H077",
+    "name": "Aster CMI - Bellandur Branch 1",
+    "type": "hospital",
+    "lat": 12.914828,
+    "lng": 77.692589,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "H078",
+    "name": "Apollo - Malleshwaram Branch 2",
+    "type": "hospital",
+    "lat": 13.028812,
+    "lng": 77.582518,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "H079",
+    "name": "Bowring - HSR Layout Branch 3",
+    "type": "hospital",
+    "lat": 12.886278,
+    "lng": 77.655338,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "H080",
+    "name": "KIMS - Bellandur Branch 2",
+    "type": "hospital",
+    "lat": 12.93422,
+    "lng": 77.678668,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "H081",
+    "name": "Cloudnine - Jayanagar Branch 5",
+    "type": "hospital",
+    "lat": 12.919958,
+    "lng": 77.566543,
+    "zone": "Jayanagar"
+  },
+  {
+    "id": "H082",
+    "name": "Victoria - Whitefield Branch 3",
+    "type": "hospital",
+    "lat": 12.955595,
+    "lng": 77.727924,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "T083",
+    "name": "Trauma Center - Hebbal",
+    "type": "trauma_center",
+    "lat": 13.012397,
+    "lng": 77.608289,
+    "zone": "Hebbal"
+  },
+  {
+    "id": "H084",
+    "name": "Columbia Asia - Koramangala Branch 1",
+    "type": "hospital",
+    "lat": 12.916643,
+    "lng": 77.612682,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H085",
+    "name": "Sakra - Hebbal Branch 5",
+    "type": "hospital",
+    "lat": 13.035605,
+    "lng": 77.58286,
+    "zone": "Hebbal"
+  },
+  {
+    "id": "H086",
+    "name": "Cloudnine - Malleshwaram Branch 1",
+    "type": "hospital",
+    "lat": 13.027172,
+    "lng": 77.538303,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "H087",
+    "name": "Cloudnine - Electronic City Branch 3",
+    "type": "hospital",
+    "lat": 12.822727,
+    "lng": 77.675041,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "H088",
+    "name": "Fortis - KR Puram Branch 2",
+    "type": "hospital",
+    "lat": 13.019405,
+    "lng": 77.687534,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H089",
+    "name": "Cloudnine - Koramangala Branch 5",
+    "type": "hospital",
+    "lat": 12.938687,
+    "lng": 77.606018,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H090",
+    "name": "Columbia Asia - Malleshwaram Branch 1",
+    "type": "hospital",
+    "lat": 13.021093,
+    "lng": 77.581521,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "H091",
+    "name": "Bowring - Koramangala Branch 3",
+    "type": "hospital",
+    "lat": 12.925516,
+    "lng": 77.614732,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "H092",
+    "name": "Cloudnine - KR Puram Branch 4",
+    "type": "hospital",
+    "lat": 13.008755,
+    "lng": 77.70898,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "H093",
+    "name": "Columbia Asia - Silk Board Branch 4",
+    "type": "hospital",
+    "lat": 12.934403,
+    "lng": 77.612288,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "H094",
+    "name": "Victoria - Yelahanka Branch 3",
+    "type": "hospital",
+    "lat": 13.097435,
+    "lng": 77.59013,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "H095",
+    "name": "Sakra - Jayanagar Branch 5",
+    "type": "hospital",
+    "lat": 12.956538,
+    "lng": 77.573774,
+    "zone": "Jayanagar"
+  },
+  {
+    "id": "H096",
+    "name": "Bowring - Banashankari Branch 5",
+    "type": "hospital",
+    "lat": 12.916599,
+    "lng": 77.591188,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "H097",
+    "name": "Aster CMI - Silk Board Branch 5",
+    "type": "hospital",
+    "lat": 12.925191,
+    "lng": 77.618452,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "H098",
+    "name": "Aster CMI - Indiranagar Branch 3",
+    "type": "hospital",
+    "lat": 12.992336,
+    "lng": 77.634284,
+    "zone": "Indiranagar"
+  },
+  {
+    "id": "H099",
+    "name": "Sakra - Rajajinagar Branch 2",
+    "type": "hospital",
+    "lat": 13.006756,
+    "lng": 77.557303,
+    "zone": "Rajajinagar"
+  },
+  {
+    "id": "H100",
+    "name": "Aster CMI - Electronic City Branch 1",
+    "type": "hospital",
+    "lat": 12.841845,
+    "lng": 77.697768,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "H101",
+    "name": "Narayana - Banashankari Branch 5",
+    "type": "hospital",
+    "lat": 12.929761,
+    "lng": 77.587669,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "H102",
+    "name": "KIMS - Marathahalli Branch 2",
+    "type": "hospital",
+    "lat": 12.978772,
+    "lng": 77.700702,
+    "zone": "Marathahalli"
+  },
+  {
+    "id": "H103",
+    "name": "Manipal - Rajajinagar Branch 5",
+    "type": "hospital",
+    "lat": 12.993225,
+    "lng": 77.576692,
+    "zone": "Rajajinagar"
+  },
+  {
+    "id": "H104",
+    "name": "Victoria - Marathahalli Branch 4",
+    "type": "hospital",
+    "lat": 12.946124,
+    "lng": 77.705371,
+    "zone": "Marathahalli"
+  },
+  {
+    "id": "H105",
+    "name": "KIMS - Bellandur Branch 3",
+    "type": "hospital",
+    "lat": 12.937452,
+    "lng": 77.684035,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "F106",
+    "name": "Karnataka State Fire - Koramangala Branch 2",
+    "type": "fire_station",
+    "lat": 12.917557,
+    "lng": 77.633379,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "F107",
+    "name": "City Fire - HSR Layout Branch 2",
+    "type": "fire_station",
+    "lat": 12.938177,
+    "lng": 77.634497,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "F108",
+    "name": "Karnataka State Fire - KR Puram Branch 3",
+    "type": "fire_station",
+    "lat": 13.003371,
+    "lng": 77.708216,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "F109",
+    "name": "City Fire - Hebbal Branch 5",
+    "type": "fire_station",
+    "lat": 13.017794,
+    "lng": 77.605499,
+    "zone": "Hebbal"
+  },
+  {
+    "id": "F110",
+    "name": "City Fire - Banashankari Branch 1",
+    "type": "fire_station",
+    "lat": 12.912408,
+    "lng": 77.583298,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "F111",
+    "name": "Karnataka State Fire - Koramangala Branch 1",
+    "type": "fire_station",
+    "lat": 12.934456,
+    "lng": 77.619623,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "F112",
+    "name": "City Fire - Bellandur Branch 3",
+    "type": "fire_station",
+    "lat": 12.947755,
+    "lng": 77.687575,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "F113",
+    "name": "Karnataka State Fire - Yelahanka Branch 2",
+    "type": "fire_station",
+    "lat": 13.106637,
+    "lng": 77.604419,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "F114",
+    "name": "City Fire - Koramangala Branch 4",
+    "type": "fire_station",
+    "lat": 12.911911,
+    "lng": 77.601123,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "F115",
+    "name": "City Fire - Indiranagar Branch 4",
+    "type": "fire_station",
+    "lat": 12.987004,
+    "lng": 77.628702,
+    "zone": "Indiranagar"
+  },
+  {
+    "id": "F116",
+    "name": "Karnataka State Fire - Bellandur Branch 4",
+    "type": "fire_station",
+    "lat": 12.936146,
+    "lng": 77.692222,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "F117",
+    "name": "Karnataka State Fire - HSR Layout Branch 4",
+    "type": "fire_station",
+    "lat": 12.887318,
+    "lng": 77.638262,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "F118",
+    "name": "Karnataka State Fire - Silk Board Branch 1",
+    "type": "fire_station",
+    "lat": 12.89711,
+    "lng": 77.606811,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "F119",
+    "name": "Karnataka State Fire - Indiranagar Branch 5",
+    "type": "fire_station",
+    "lat": 12.977487,
+    "lng": 77.620581,
+    "zone": "Indiranagar"
+  },
+  {
+    "id": "F120",
+    "name": "City Fire - HSR Layout Branch 5",
+    "type": "fire_station",
+    "lat": 12.918694,
+    "lng": 77.66896,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "F121",
+    "name": "Karnataka State Fire - Whitefield Branch 1",
+    "type": "fire_station",
+    "lat": 12.956214,
+    "lng": 77.748953,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "F122",
+    "name": "Karnataka State Fire - Koramangala Branch 1",
+    "type": "fire_station",
+    "lat": 12.940564,
+    "lng": 77.646824,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "F123",
+    "name": "Karnataka State Fire - KR Puram Branch 2",
+    "type": "fire_station",
+    "lat": 12.996026,
+    "lng": 77.71406,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "F124",
+    "name": "City Fire - Rajajinagar Branch 1",
+    "type": "fire_station",
+    "lat": 13.017434,
+    "lng": 77.541228,
+    "zone": "Rajajinagar"
+  },
+  {
+    "id": "F125",
+    "name": "Karnataka State Fire - Indiranagar Branch 3",
+    "type": "fire_station",
+    "lat": 12.997689,
+    "lng": 77.659198,
+    "zone": "Indiranagar"
+  },
+  {
+    "id": "F126",
+    "name": "Karnataka State Fire - Hebbal Branch 5",
+    "type": "fire_station",
+    "lat": 13.051399,
+    "lng": 77.588378,
+    "zone": "Hebbal"
+  },
+  {
+    "id": "F127",
+    "name": "City Fire - Whitefield Branch 2",
+    "type": "fire_station",
+    "lat": 12.947645,
+    "lng": 77.750996,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "F128",
+    "name": "City Fire - Rajajinagar Branch 2",
+    "type": "fire_station",
+    "lat": 13.011454,
+    "lng": 77.558679,
+    "zone": "Rajajinagar"
+  },
+  {
+    "id": "F129",
+    "name": "City Fire - Hebbal Branch 5",
+    "type": "fire_station",
+    "lat": 13.033122,
+    "lng": 77.599782,
+    "zone": "Hebbal"
+  },
+  {
+    "id": "F130",
+    "name": "City Fire - Bellandur Branch 3",
+    "type": "fire_station",
+    "lat": 12.922544,
+    "lng": 77.669131,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "F131",
+    "name": "City Fire - Marathahalli Branch 1",
+    "type": "fire_station",
+    "lat": 12.933022,
+    "lng": 77.708164,
+    "zone": "Marathahalli"
+  },
+  {
+    "id": "F132",
+    "name": "City Fire - Malleshwaram Branch 5",
+    "type": "fire_station",
+    "lat": 13.006226,
+    "lng": 77.575883,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "F133",
+    "name": "City Fire - Malleshwaram Branch 4",
+    "type": "fire_station",
+    "lat": 13.02423,
+    "lng": 77.583621,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "F134",
+    "name": "City Fire - HSR Layout Branch 1",
+    "type": "fire_station",
+    "lat": 12.937988,
+    "lng": 77.664373,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "F135",
+    "name": "City Fire - KR Puram Branch 1",
+    "type": "fire_station",
+    "lat": 13.012959,
+    "lng": 77.685352,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "F136",
+    "name": "City Fire - Indiranagar Branch 1",
+    "type": "fire_station",
+    "lat": 12.968048,
+    "lng": 77.626018,
+    "zone": "Indiranagar"
+  },
+  {
+    "id": "F137",
+    "name": "Karnataka State Fire - Yelahanka Branch 5",
+    "type": "fire_station",
+    "lat": 13.081645,
+    "lng": 77.596417,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "F138",
+    "name": "Karnataka State Fire - Whitefield Branch 2",
+    "type": "fire_station",
+    "lat": 12.963969,
+    "lng": 77.763147,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "F139",
+    "name": "Karnataka State Fire - Electronic City Branch 4",
+    "type": "fire_station",
+    "lat": 12.831959,
+    "lng": 77.686013,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "F140",
+    "name": "City Fire - Electronic City Branch 4",
+    "type": "fire_station",
+    "lat": 12.855613,
+    "lng": 77.699585,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "P141",
+    "name": "Law & Order Police Station - Electronic City Branch 3",
+    "type": "police_station",
+    "lat": 12.863288,
+    "lng": 77.671374,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "P142",
+    "name": "Law & Order Police Station - Koramangala Branch 2",
+    "type": "police_station",
+    "lat": 12.916405,
+    "lng": 77.636296,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "P143",
+    "name": "Traffic Police Station - Bellandur Branch 4",
+    "type": "police_station",
+    "lat": 12.956451,
+    "lng": 77.702069,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "P144",
+    "name": "Law & Order Police Station - KR Puram Branch 5",
+    "type": "police_station",
+    "lat": 13.022848,
+    "lng": 77.691066,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "P145",
+    "name": "Traffic Police Station - Yelahanka Branch 3",
+    "type": "police_station",
+    "lat": 13.121069,
+    "lng": 77.590882,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "P146",
+    "name": "Law & Order Police Station - Yelahanka Branch 1",
+    "type": "police_station",
+    "lat": 13.080999,
+    "lng": 77.576998,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "P147",
+    "name": "Traffic Police Station - Silk Board Branch 2",
+    "type": "police_station",
+    "lat": 12.910087,
+    "lng": 77.596954,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "P148",
+    "name": "Law & Order Police Station - Yelahanka Branch 1",
+    "type": "police_station",
+    "lat": 13.09031,
+    "lng": 77.571714,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "P149",
+    "name": "Traffic Police Station - HSR Layout Branch 5",
+    "type": "police_station",
+    "lat": 12.934268,
+    "lng": 77.61952,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "P150",
+    "name": "Traffic Police Station - Yelahanka Branch 2",
+    "type": "police_station",
+    "lat": 13.102188,
+    "lng": 77.601147,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "P151",
+    "name": "Traffic Police Station - HSR Layout Branch 3",
+    "type": "police_station",
+    "lat": 12.887925,
+    "lng": 77.622108,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "P152",
+    "name": "Law & Order Police Station - Jayanagar Branch 5",
+    "type": "police_station",
+    "lat": 12.919336,
+    "lng": 77.57436,
+    "zone": "Jayanagar"
+  },
+  {
+    "id": "P153",
+    "name": "Traffic Police Station - Yelahanka Branch 4",
+    "type": "police_station",
+    "lat": 13.118877,
+    "lng": 77.610372,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "P154",
+    "name": "Law & Order Police Station - Jayanagar Branch 1",
+    "type": "police_station",
+    "lat": 12.914612,
+    "lng": 77.577943,
+    "zone": "Jayanagar"
+  },
+  {
+    "id": "P155",
+    "name": "Law & Order Police Station - Malleshwaram Branch 5",
+    "type": "police_station",
+    "lat": 12.986077,
+    "lng": 77.570044,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "P156",
+    "name": "Law & Order Police Station - Silk Board Branch 2",
+    "type": "police_station",
+    "lat": 12.89646,
+    "lng": 77.602985,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "P157",
+    "name": "Traffic Police Station - Electronic City Branch 2",
+    "type": "police_station",
+    "lat": 12.849956,
+    "lng": 77.662953,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "P158",
+    "name": "Traffic Police Station - Jayanagar Branch 1",
+    "type": "police_station",
+    "lat": 12.945539,
+    "lng": 77.607084,
+    "zone": "Jayanagar"
+  },
+  {
+    "id": "P159",
+    "name": "Law & Order Police Station - Silk Board Branch 5",
+    "type": "police_station",
+    "lat": 12.911262,
+    "lng": 77.617006,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "P160",
+    "name": "Traffic Police Station - Yelahanka Branch 3",
+    "type": "police_station",
+    "lat": 13.089044,
+    "lng": 77.61266,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "P161",
+    "name": "Law & Order Police Station - Indiranagar Branch 4",
+    "type": "police_station",
+    "lat": 12.978993,
+    "lng": 77.616536,
+    "zone": "Indiranagar"
+  },
+  {
+    "id": "P162",
+    "name": "Traffic Police Station - Silk Board Branch 1",
+    "type": "police_station",
+    "lat": 12.919094,
+    "lng": 77.62091,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "P163",
+    "name": "Traffic Police Station - HSR Layout Branch 4",
+    "type": "police_station",
+    "lat": 12.920203,
+    "lng": 77.664457,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "P164",
+    "name": "Traffic Police Station - HSR Layout Branch 5",
+    "type": "police_station",
+    "lat": 12.914456,
+    "lng": 77.660705,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "P165",
+    "name": "Traffic Police Station - Marathahalli Branch 3",
+    "type": "police_station",
+    "lat": 12.982963,
+    "lng": 77.708827,
+    "zone": "Marathahalli"
+  },
+  {
+    "id": "P166",
+    "name": "Traffic Police Station - Whitefield Branch 5",
+    "type": "police_station",
+    "lat": 12.959188,
+    "lng": 77.768557,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "P167",
+    "name": "Traffic Police Station - Electronic City Branch 5",
+    "type": "police_station",
+    "lat": 12.849775,
+    "lng": 77.686455,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "P168",
+    "name": "Traffic Police Station - Electronic City Branch 3",
+    "type": "police_station",
+    "lat": 12.842503,
+    "lng": 77.661554,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "P169",
+    "name": "Law & Order Police Station - Koramangala Branch 3",
+    "type": "police_station",
+    "lat": 12.920278,
+    "lng": 77.626454,
+    "zone": "Koramangala"
+  },
+  {
+    "id": "P170",
+    "name": "Traffic Police Station - Banashankari Branch 1",
+    "type": "police_station",
+    "lat": 12.914682,
+    "lng": 77.551522,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "P171",
+    "name": "Traffic Police Station - Bellandur Branch 1",
+    "type": "police_station",
+    "lat": 12.926734,
+    "lng": 77.676369,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "P172",
+    "name": "Traffic Police Station - HSR Layout Branch 4",
+    "type": "police_station",
+    "lat": 12.931898,
+    "lng": 77.624801,
+    "zone": "HSR Layout"
+  },
+  {
+    "id": "P173",
+    "name": "Traffic Police Station - Jayanagar Branch 3",
+    "type": "police_station",
+    "lat": 12.934118,
+    "lng": 77.565014,
+    "zone": "Jayanagar"
+  },
+  {
+    "id": "P174",
+    "name": "Law & Order Police Station - Electronic City Branch 5",
+    "type": "police_station",
+    "lat": 12.833656,
+    "lng": 77.680486,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "P175",
+    "name": "Law & Order Police Station - Banashankari Branch 2",
+    "type": "police_station",
+    "lat": 12.905873,
+    "lng": 77.571836,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "P176",
+    "name": "Traffic Police Station - KR Puram Branch 2",
+    "type": "police_station",
+    "lat": 12.995279,
+    "lng": 77.678233,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "P177",
+    "name": "Traffic Police Station - Malleshwaram Branch 2",
+    "type": "police_station",
+    "lat": 13.004024,
+    "lng": 77.546719,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "P178",
+    "name": "Law & Order Police Station - KR Puram Branch 2",
+    "type": "police_station",
+    "lat": 13.013375,
+    "lng": 77.699181,
+    "zone": "KR Puram"
+  },
+  {
+    "id": "P179",
+    "name": "Law & Order Police Station - Marathahalli Branch 3",
+    "type": "police_station",
+    "lat": 12.954951,
+    "lng": 77.710243,
+    "zone": "Marathahalli"
+  },
+  {
+    "id": "P180",
+    "name": "Traffic Police Station - Hebbal Branch 3",
+    "type": "police_station",
+    "lat": 13.055119,
+    "lng": 77.598059,
+    "zone": "Hebbal"
+  },
+  {
+    "id": "P181",
+    "name": "Traffic Police Station - Hebbal Branch 3",
+    "type": "police_station",
+    "lat": 13.018384,
+    "lng": 77.587188,
+    "zone": "Hebbal"
+  },
+  {
+    "id": "P182",
+    "name": "Traffic Police Station - Banashankari Branch 4",
+    "type": "police_station",
+    "lat": 12.889666,
+    "lng": 77.574606,
+    "zone": "Banashankari"
+  },
+  {
+    "id": "P183",
+    "name": "Traffic Police Station - Marathahalli Branch 3",
+    "type": "police_station",
+    "lat": 12.975725,
+    "lng": 77.696699,
+    "zone": "Marathahalli"
+  },
+  {
+    "id": "P184",
+    "name": "Traffic Police Station - Bellandur Branch 5",
+    "type": "police_station",
+    "lat": 12.939606,
+    "lng": 77.697771,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "P185",
+    "name": "Traffic Police Station - Indiranagar Branch 5",
+    "type": "police_station",
+    "lat": 12.992255,
+    "lng": 77.615467,
+    "zone": "Indiranagar"
+  },
+  {
+    "id": "P186",
+    "name": "Traffic Police Station - Malleshwaram Branch 3",
+    "type": "police_station",
+    "lat": 13.006949,
+    "lng": 77.540675,
+    "zone": "Malleshwaram"
+  },
+  {
+    "id": "P187",
+    "name": "Law & Order Police Station - Electronic City Branch 4",
+    "type": "police_station",
+    "lat": 12.822192,
+    "lng": 77.665141,
+    "zone": "Electronic City"
+  },
+  {
+    "id": "P188",
+    "name": "Traffic Police Station - Silk Board Branch 5",
+    "type": "police_station",
+    "lat": 12.911268,
+    "lng": 77.639922,
+    "zone": "Silk Board"
+  },
+  {
+    "id": "P189",
+    "name": "Law & Order Police Station - Bellandur Branch 5",
+    "type": "police_station",
+    "lat": 12.940959,
+    "lng": 77.654135,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "P190",
+    "name": "Traffic Police Station - Marathahalli Branch 5",
+    "type": "police_station",
+    "lat": 12.939842,
+    "lng": 77.683379,
+    "zone": "Marathahalli"
+  },
+  {
+    "id": "P191",
+    "name": "Traffic Police Station - Indiranagar Branch 3",
+    "type": "police_station",
+    "lat": 12.956969,
+    "lng": 77.650714,
+    "zone": "Indiranagar"
+  },
+  {
+    "id": "P192",
+    "name": "Traffic Police Station - Whitefield Branch 1",
+    "type": "police_station",
+    "lat": 12.950626,
+    "lng": 77.763454,
+    "zone": "Whitefield"
+  },
+  {
+    "id": "P193",
+    "name": "Traffic Police Station - Yelahanka Branch 2",
+    "type": "police_station",
+    "lat": 13.117539,
+    "lng": 77.606898,
+    "zone": "Yelahanka"
+  },
+  {
+    "id": "P194",
+    "name": "Traffic Police Station - Bellandur Branch 3",
+    "type": "police_station",
+    "lat": 12.949977,
+    "lng": 77.654128,
+    "zone": "Bellandur"
+  },
+  {
+    "id": "P195",
+    "name": "Law & Order Police Station - Whitefield Branch 3",
+    "type": "police_station",
+    "lat": 12.977193,
+    "lng": 77.765968,
+    "zone": "Whitefield"
+  }
+]
