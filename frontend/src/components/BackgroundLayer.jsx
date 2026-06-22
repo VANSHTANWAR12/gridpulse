@@ -8,7 +8,6 @@ export default function BackgroundLayer() {
     if (!video) return;
 
     const updateTime = () => {
-      // Ensure we have a valid duration before calculating
       if (Number.isNaN(video.duration) || video.duration === 0) return;
       
       const now = new Date();
@@ -21,25 +20,20 @@ export default function BackgroundLayer() {
       // Calculate how far we are into the 24-hour day (0.0 to 1.0)
       const fractionOfDay = secondsSinceMidnight / 86400;
       
-      // Map the time of day directly to the video's timeline
+      // Sync the video playhead directly with the time of day fraction
       video.currentTime = fractionOfDay * video.duration;
     };
-
-    // Pause the video since we are manually scrubbing the timeline to sync with real-world time
-    video.pause();
 
     const onLoadedMetadata = () => {
       updateTime();
     };
-    
+
     video.addEventListener('loadedmetadata', onLoadedMetadata);
     
-    // Update the frame periodically to stay in sync with the current time
-    // An interval of 1000ms is sufficient because the video plays extremely slowly 
-    // (a 10s video stretched over 24 hours only changes by ~0.0001s per real-time second)
+    // Periodically force the playhead to match the exact current time
     const interval = setInterval(updateTime, 1000);
 
-    // Initial call in case metadata is already loaded
+    // Initial check if metadata is already loaded
     if (video.readyState >= 1) {
       updateTime();
     }
@@ -66,6 +60,9 @@ export default function BackgroundLayer() {
         src="/city_skyline.mp4"
         muted
         playsInline
+        autoPlay
+        loop
+        preload="auto"
         style={{
           position: 'absolute',
           width: '100%',
