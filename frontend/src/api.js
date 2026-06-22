@@ -1,9 +1,13 @@
 // frontend/src/api.js
 
-// Ensure VITE_API_URL doesn't end with a slash to prevent double slashes.
-let baseUrl = (import.meta.env.VITE_API_URL || "http://localhost:8000").trim();
-if (baseUrl.endsWith('/')) {
-  baseUrl = baseUrl.slice(0, -1);
+// Use relative path in production to leverage Vercel's vercel.json reverse proxy,
+// avoiding CORS issues. Use VITE_API_URL or localhost in development.
+let baseUrl = "";
+if (import.meta.env.DEV) {
+  baseUrl = (import.meta.env.VITE_API_URL || "http://localhost:8000").trim();
+  if (baseUrl.endsWith('/')) {
+    baseUrl = baseUrl.slice(0, -1);
+  }
 }
 
 export const API_BASE = baseUrl;
