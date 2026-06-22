@@ -7,9 +7,9 @@ export default function BackgroundLayer() {
     const video = videoRef.current;
     if (!video) return;
 
-    const updateTime = () => {
+    const initializeVideo = () => {
       if (Number.isNaN(video.duration) || video.duration === 0) return;
-      
+
       const now = new Date();
       const secondsSinceMidnight = 
         now.getHours() * 3600 + 
@@ -20,26 +20,29 @@ export default function BackgroundLayer() {
       // Calculate how far we are into the 24-hour day (0.0 to 1.0)
       const fractionOfDay = secondsSinceMidnight / 86400;
       
-      // Sync the video playhead directly with the time of day fraction
+      // Start the video from the current time of day
       video.currentTime = fractionOfDay * video.duration;
+      
+      // Scale the playback rate so that the video duration fits exactly 24 hours (86400 seconds)
+      const targetPlaybackRate = video.duration / 86400;
+      video.playbackRate = targetPlaybackRate;
+      
+      // Play the video naturally at this scaled playback rate
+      video.play().catch(e => console.error("Video play failed:", e));
     };
 
     const onLoadedMetadata = () => {
-      updateTime();
+      initializeVideo();
     };
 
     video.addEventListener('loadedmetadata', onLoadedMetadata);
-    
-    // Periodically force the playhead to match the exact current time
-    const interval = setInterval(updateTime, 1000);
 
-    // Initial check if metadata is already loaded
+    // If metadata is already loaded when the effect runs, initialize immediately
     if (video.readyState >= 1) {
-      updateTime();
+      initializeVideo();
     }
 
     return () => {
-      clearInterval(interval);
       video.removeEventListener('loadedmetadata', onLoadedMetadata);
     };
   }, []);
@@ -60,7 +63,6 @@ export default function BackgroundLayer() {
         src="/city_skyline.mp4"
         muted
         playsInline
-        autoPlay
         loop
         preload="auto"
         style={{
