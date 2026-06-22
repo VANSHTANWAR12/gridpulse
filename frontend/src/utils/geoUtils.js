@@ -46,3 +46,20 @@ export function findNearestPoliceStation(lat, lng, allFacilities) {
   const policeStations = allFacilities.filter(f => f.type === 'police_station');
   return findNearestFacility(lat, lng, policeStations);
 }
+
+// Generate a GeoJSON polygon representing a circle around a given point
+export function generateCircle(center, radiusKm, points = 64) {
+  const coords = [];
+  // center is [lng, lat]
+  const distanceX = radiusKm / (111.320 * Math.cos(center[1] * Math.PI / 180));
+  const distanceY = radiusKm / 110.574;
+
+  for (let i = 0; i < points; i++) {
+    const theta = (i / points) * (2 * Math.PI);
+    const x = distanceX * Math.cos(theta);
+    const y = distanceY * Math.sin(theta);
+    coords.push([center[0] + x, center[1] + y]);
+  }
+  coords.push(coords[0]); // close the polygon
+  return coords;
+}

@@ -24,7 +24,9 @@ export default function BackgroundLayer() {
       video.currentTime = fractionOfDay * video.duration;
       
       // Scale the playback rate so that the video duration fits exactly 24 hours (86400 seconds)
-      const targetPlaybackRate = video.duration / 86400;
+      let targetPlaybackRate = video.duration / 86400;
+      // Clamp the playback rate to a browser-supported range (typically 0.0625 to 16)
+      targetPlaybackRate = Math.max(0.0625, Math.min(targetPlaybackRate, 16));
       video.playbackRate = targetPlaybackRate;
       
       // Play the video naturally at this scaled playback rate

@@ -3,7 +3,7 @@ import maplibregl from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Siren, Activity, Shield, Flame, MapPin, Navigation, Clock, Zap, Target, PlayCircle, BarChart3, AlertCircle, RefreshCw, CheckCircle } from 'lucide-react';
-import { findNearestHospital, findNearestFireStation, findNearestPoliceStation, getHaversineDistance } from '../utils/geoUtils';
+import { findNearestHospital, findNearestFireStation, findNearestPoliceStation, getHaversineDistance, generateCircle } from '../utils/geoUtils';
 import EmergencyInfrastructureLayer from './EmergencyInfrastructureLayer';
 import { getApiUrl } from '../api';
 
