@@ -4889,3 +4889,131 @@ input::placeholder {
 .main-header, .nav-tab-container, .details-card, .sidebar {
   border-left: none !important;
 }
+
+/* Mini-Map Preview Card and Tactical Fullscreen Modal */
+.mini-map-preview-card {
+  position: relative;
+  width: 100%;
+  height: 140px;
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.08);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mini-map-preview-card:hover {
+  border-color: rgba(6, 182, 212, 0.6);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.25);
+  transform: translateY(-2px);
+}
+
+.mini-map-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(5, 11, 24, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #06b6d4;
+  font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.mini-map-preview-card:hover .mini-map-overlay {
+  opacity: 1;
+}
+
+.mini-map-preview-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Fullscreen Modal Styles */
+.tactical-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 8, 16, 0.95);
+  backdrop-filter: blur(8px);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+}
+
+.tactical-modal-header {
+  height: 60px;
+  padding: 0 24px;
+  background: rgba(10, 15, 30, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tactical-modal-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tactical-modal-close-btn {
+  background: rgba(225, 29, 72, 0.15);
+  border: 1px solid rgba(225, 29, 72, 0.4);
+  color: #f43f5e;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tactical-modal-close-btn:hover {
+  background: rgba(225, 29, 72, 0.3);
+  box-shadow: 0 0 10px rgba(225, 29, 72, 0.2);
+}
+
+.tactical-modal-body {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  height: calc(100vh - 60px);
+}
+
+.tactical-map-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.tactical-side-panel {
+  background: rgba(10, 15, 30, 0.85);
+  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.tactical-side-panel::-webkit-scrollbar {
+  display: none;
+}
+

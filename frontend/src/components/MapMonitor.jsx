@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { Play, RotateCcw, Shield, Construction, MapPin, Eye, Brain, AlertTriangle, Compass, CornerUpLeft, CornerUpRight, ArrowUp, RotateCw, Navigation, CircleDot } from 'lucide-react';
 import { translateCause, translateAddress, translateDiversionSign, translatePriority } from '../translations';
 import maplibregl from 'maplibre-gl';
@@ -22,6 +23,45 @@ const calculateEcoImpact = (durationHours, severityScore) => {
     money: Math.round(moneySavedINR).toLocaleString('en-IN'),
     co2: co2SavedKG.toFixed(1)
   };
+};
+
+// Route animation helpers
+const getLineLength = (coords) => {
+  let length = 0;
+  for (let i = 0; i < coords.length - 1; i++) {
+    const dx = coords[i+1][0] - coords[i][0];
+    const dy = coords[i+1][1] - coords[i][1];
+    length += Math.sqrt(dx * dx + dy * dy);
+  }
+  return length;
+};
+
+const interpolatePointAlongLine = (coords, fraction) => {
+  if (!coords || coords.length === 0) return null;
+  if (coords.length === 1) return coords[0];
+
+  const totalLength = getLineLength(coords);
+  const targetLength = totalLength * fraction;
+
+  let currentLength = 0;
+  for (let i = 0; i < coords.length - 1; i++) {
+    const p1 = coords[i];
+    const p2 = coords[i+1];
+    
+    const dx = p2[0] - p1[0];
+    const dy = p2[1] - p1[1];
+    const segmentLength = Math.sqrt(dx * dx + dy * dy);
+
+    if (currentLength + segmentLength >= targetLength) {
+      const segmentFraction = segmentLength > 0 ? (targetLength - currentLength) / segmentLength : 0;
+      return [
+        p1[0] + dx * segmentFraction,
+        p1[1] + dy * segmentFraction
+      ];
+    }
+    currentLength += segmentLength;
+  }
+  return coords[coords.length - 1];
 };
 
 const BENGALURU_CENTER = [77.5946, 12.9785];
@@ -224,9 +264,14 @@ export default function MapMonitor({
   const [routingError, setRoutingError] = useState(null);
   const [wardropSplit, setWardropSplit] = useState(null);
   const [activeDetailsTab, setActiveDetailsTab] = useState('mitigation');
-
+  const [showTacticalModal, setShowTacticalModal] = useState(false);
 
   const routeDataRef = useRef(routeData);
+  const miniMapRef = useRef(null);
+  const miniMapContainerRef = useRef(null);
+  const tacticalMapRef = useRef(null);
+  const tacticalMapContainerRef = useRef(null);
+  const congestedFullCoordsRef = useRef(null);
   useEffect(() => {
     routeDataRef.current = routeData;
   }, [routeData]);
@@ -365,7 +410,11 @@ export default function MapMonitor({
             layout: { 'line-join': 'round', 'line-cap': 'round' },
             paint: {
               'line-color': ['get', 'color'],
-              'line-width': 14,
+              'line-width': [
+                'case',
+                ['==', ['get', 'kind'], 'congested_overlap'], 20,
+                14
+              ],
               'line-opacity': 0.25,
               'line-blur': 6
             }
@@ -378,7 +427,11 @@ export default function MapMonitor({
             layout: { 'line-join': 'round', 'line-cap': 'round' },
             paint: {
               'line-color': ['get', 'color'],
-              'line-width': 4.5,
+              'line-width': [
+                'case',
+                ['==', ['get', 'kind'], 'congested_overlap'], 8.0,
+                4.5
+              ],
               'line-opacity': 0.95
             }
           });
@@ -523,11 +576,325 @@ export default function MapMonitor({
   }, [selectedIncident, mapReady, is3D]);
 
   // Update selected-routes layer data reactively when routeData changes
+  // In the main map, we hide the detour routes by setting an empty FeatureCollection.
   useEffect(() => {
     if (mapReady && mapRef.current) {
-      mapRef.current.getSource('selected-routes')?.setData(routeData);
+      mapRef.current.getSource('selected-routes')?.setData({ type: 'FeatureCollection', features: [] });
     }
   }, [routeData, mapReady]);
+
+  // Mini Map setup
+  useEffect(() => {
+    if (activeDetailsTab !== 'flow-partition' || !miniMapContainerRef.current || !selectedIncident) {
+      if (miniMapRef.current) {
+        miniMapRef.current.remove();
+        miniMapRef.current = null;
+      }
+      return undefined;
+    }
+
+    const key = (MAPTILER_KEY || '').replace(/['"]/g, '').trim();
+    const hasValidKey = key && key !== 'your_maptiler_api_key_here' && key !== 'placeholder' && !key.includes('your_');
+    const mapStyle = hasValidKey
+      ? (is3D ? `https://api.maptiler.com/maps/hybrid/style.json?key=${key}` : `https://api.maptiler.com/maps/dataviz-light/style.json?key=${key}`)
+      : (is3D ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' : 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json');
+
+    const latVal = Number(selectedIncident.latitude);
+    const lonVal = Number(selectedIncident.longitude);
+    if (!Number.isFinite(latVal) || !Number.isFinite(lonVal)) return undefined;
+
+    let miniMap = miniMapRef.current;
+    if (!miniMap) {
+      miniMap = new maplibregl.Map({
+        container: miniMapContainerRef.current,
+        style: mapStyle,
+        center: [lonVal, latVal],
+        zoom: 12.0,
+        pitch: is3D ? 55 : 0,
+        bearing: is3D ? -15 : 0,
+        attributionControl: false,
+        interactive: false
+      });
+      miniMapRef.current = miniMap;
+
+      miniMap.on('load', () => {
+        miniMap.resize();
+        miniMap.addSource('selected-routes', { type: 'geojson', data: routeData });
+
+        miniMap.addLayer({
+          id: 'selected-route-glow',
+          type: 'line',
+          source: 'selected-routes',
+          filter: ['==', '$type', 'LineString'],
+          layout: { 'line-join': 'round', 'line-cap': 'round' },
+          paint: {
+            'line-color': ['get', 'color'],
+            'line-width': [
+              'case',
+              ['==', ['get', 'kind'], 'congested_overlap'], 14,
+              8
+            ],
+            'line-opacity': 0.25,
+            'line-blur': 3
+          }
+        });
+        miniMap.addLayer({
+          id: 'selected-route-core',
+          type: 'line',
+          source: 'selected-routes',
+          filter: ['==', '$type', 'LineString'],
+          layout: { 'line-join': 'round', 'line-cap': 'round' },
+          paint: {
+            'line-color': ['get', 'color'],
+            'line-width': [
+              'case',
+              ['==', ['get', 'kind'], 'congested_overlap'], 7.0,
+              3.0
+            ],
+            'line-opacity': 0.95
+          }
+        });
+
+        const el = document.createElement('div');
+        el.style.width = '10px';
+        el.style.height = '10px';
+        el.style.borderRadius = '50%';
+        el.style.backgroundColor = '#ef4444';
+        el.style.border = '1.5px solid #fff';
+
+        new maplibregl.Marker({ element: el })
+          .setLngLat([lonVal, latVal])
+          .addTo(miniMap);
+      });
+    } else {
+      miniMap.setCenter([lonVal, latVal]);
+      if (miniMap.getSource('selected-routes')) {
+        miniMap.getSource('selected-routes').setData(routeData);
+      }
+    }
+
+    return () => {
+      if (miniMapRef.current) {
+        miniMapRef.current.remove();
+        miniMapRef.current = null;
+      }
+    };
+  }, [activeDetailsTab, selectedIncident, routeData, is3D]);
+
+  // Fullscreen Tactical Map setup
+  useEffect(() => {
+    if (!showTacticalModal || !tacticalMapContainerRef.current || !selectedIncident) {
+      if (tacticalMapRef.current) {
+        tacticalMapRef.current.remove();
+        tacticalMapRef.current = null;
+      }
+      return undefined;
+    }
+
+    const key = (MAPTILER_KEY || '').replace(/['"]/g, '').trim();
+    const hasValidKey = key && key !== 'your_maptiler_api_key_here' && key !== 'placeholder' && !key.includes('your_');
+    const mapStyle = hasValidKey
+      ? (is3D ? `https://api.maptiler.com/maps/hybrid/style.json?key=${key}` : `https://api.maptiler.com/maps/dataviz-light/style.json?key=${key}`)
+      : (is3D ? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' : 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json');
+
+    const latVal = Number(selectedIncident.latitude);
+    const lonVal = Number(selectedIncident.longitude);
+    if (!Number.isFinite(latVal) || !Number.isFinite(lonVal)) return undefined;
+
+    let tacMap = tacticalMapRef.current;
+    if (!tacMap) {
+      tacMap = new maplibregl.Map({
+        container: tacticalMapContainerRef.current,
+        style: mapStyle,
+        center: [lonVal, latVal],
+        zoom: 13.5,
+        pitch: is3D ? 55 : 0,
+        bearing: is3D ? -15 : 0,
+        attributionControl: false,
+        interactive: true
+      });
+      tacticalMapRef.current = tacMap;
+
+      tacMap.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'bottom-right');
+
+      tacMap.on('load', () => {
+        tacMap.resize();
+        tacMap.addSource('selected-routes', { type: 'geojson', data: routeData });
+
+        tacMap.addLayer({
+          id: 'selected-route-glow',
+          type: 'line',
+          source: 'selected-routes',
+          filter: ['==', '$type', 'LineString'],
+          layout: { 'line-join': 'round', 'line-cap': 'round' },
+          paint: {
+            'line-color': ['get', 'color'],
+            'line-width': [
+              'case',
+              ['==', ['get', 'kind'], 'congested_overlap'], 20,
+              14
+            ],
+            'line-opacity': 0.25,
+            'line-blur': 6
+          }
+        });
+        tacMap.addLayer({
+          id: 'selected-route-core',
+          type: 'line',
+          source: 'selected-routes',
+          filter: ['==', '$type', 'LineString'],
+          layout: { 'line-join': 'round', 'line-cap': 'round' },
+          paint: {
+            'line-color': ['get', 'color'],
+            'line-width': [
+              'case',
+              ['==', ['get', 'kind'], 'congested_overlap'], 8.0,
+              4.5
+            ],
+            'line-opacity': 0.95
+          }
+        });
+
+        tacMap.addSource('route-particles', {
+          type: 'geojson',
+          data: { type: 'FeatureCollection', features: [] }
+        });
+
+        tacMap.addLayer({
+          id: 'route-particles-glow',
+          type: 'circle',
+          source: 'route-particles',
+          paint: {
+            'circle-color': ['get', 'color'],
+            'circle-radius': ['get', 'glowRadius'],
+            'circle-opacity': 0.38,
+            'circle-blur': 0.5
+          }
+        });
+
+        tacMap.addLayer({
+          id: 'route-particles-core',
+          type: 'circle',
+          source: 'route-particles',
+          paint: {
+            'circle-color': ['get', 'color'],
+            'circle-radius': ['get', 'coreRadius'],
+            'circle-stroke-width': 1,
+            'circle-stroke-color': '#ffffff'
+          }
+        });
+
+        const el = document.createElement('div');
+        el.className = 'custom-pin-container pin-active';
+        el.innerHTML = `
+          <div class="pin-marker" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 50% 50% 50% 0; background: #ef4444; transform: rotate(-45deg); border: 2px solid #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.4);">
+            <i class="fa-solid fa-triangle-exclamation" style="transform: rotate(45deg); color: #fff; font-size: 12px;"></i>
+          </div>
+        `;
+
+        new maplibregl.Marker({ element: el, anchor: 'bottom' })
+          .setLngLat([lonVal, latVal])
+          .addTo(tacMap);
+      });
+    } else {
+      tacMap.setCenter([lonVal, latVal]);
+      if (tacMap.getSource('selected-routes')) {
+        tacMap.getSource('selected-routes').setData(routeData);
+      }
+    }
+
+    return () => {
+      if (tacticalMapRef.current) {
+        tacticalMapRef.current.remove();
+        tacticalMapRef.current = null;
+      }
+    };
+  }, [showTacticalModal, selectedIncident, routeData, is3D]);
+
+  // Route Particles Animation Loop (only active when modal is open)
+  useEffect(() => {
+    const hasActiveMap = showTacticalModal && tacticalMapRef.current;
+    if (!hasActiveMap || !routeData || !routeData.features || routeData.features.length === 0) {
+      return undefined;
+    }
+
+    const congestedCoords = congestedFullCoordsRef.current;
+    let detourLeftCoords = null;
+    let detourRightCoords = null;
+
+    routeData.features.forEach(f => {
+      if (f.geometry && f.geometry.type === 'LineString') {
+        const kind = f.properties?.kind;
+        if (kind === 'detour_left') detourLeftCoords = f.geometry.coordinates;
+        else if (kind === 'detour_right') detourRightCoords = f.geometry.coordinates;
+      }
+    });
+
+    if (!congestedCoords && !detourLeftCoords && !detourRightCoords) {
+      return undefined;
+    }
+
+    let animationFrameId;
+    let lastTime = performance.now();
+
+    let congestedProgress = 0;
+    let detourLeftProgress = 0;
+    let detourRightProgress = 0;
+
+    const animateParticles = (time) => {
+      const delta = (time - lastTime) / 1000;
+      lastTime = time;
+
+      congestedProgress = (congestedProgress + delta * 0.05) % 1.0;
+      detourLeftProgress = (detourLeftProgress + delta * 0.18) % 1.0;
+      detourRightProgress = (detourRightProgress + delta * 0.18) % 1.0;
+
+      const features = [];
+
+      const addStreamParticles = (coords, progress, color, kind) => {
+        if (!coords || coords.length < 2) return;
+        for (let i = 0; i < 3; i++) {
+          const pProgress = (progress + i * 0.33) % 1.0;
+          const pt = interpolatePointAlongLine(coords, pProgress);
+          if (pt) {
+            features.push({
+              type: 'Feature',
+              properties: {
+                color,
+                coreRadius: kind === 'congested' ? 3.0 : 4.0,
+                glowRadius: kind === 'congested' ? 7.0 : 9.5
+              },
+              geometry: {
+                type: 'Point',
+                coordinates: pt
+              }
+            });
+          }
+        }
+      };
+
+      addStreamParticles(congestedCoords, congestedProgress, '#ef4444', 'congested');
+      addStreamParticles(detourLeftCoords, detourLeftProgress, '#06b6d4', 'left');
+      addStreamParticles(detourRightCoords, detourRightProgress, '#6366f1', 'right');
+
+      const particleGeoJson = {
+        type: 'FeatureCollection',
+        features
+      };
+
+      if (tacticalMapRef.current) {
+        tacticalMapRef.current.getSource('route-particles')?.setData(particleGeoJson);
+      }
+
+      animationFrameId = requestAnimationFrame(animateParticles);
+    };
+
+    animationFrameId = requestAnimationFrame(animateParticles);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, [routeData, showTacticalModal, selectedIncident]);
 
   // Fetch dynamic routing using OSRM API with parallel evaluation & self-correcting logic
   useEffect(() => {
@@ -617,45 +984,118 @@ export default function MapMonitor({
         throw new Error('Missing routes in API response');
       }
 
-      // Multi-Hub split calculation
-      const newGeoJson = {
-        type: 'FeatureCollection',
-        features: [
-          {
+      // Congested Route Proximity Segmentation (identify overlaps)
+      const congestedCoords = congestedRoute.geometry.coordinates;
+      const leftCoords = leftRoute.geometry.coordinates;
+      const rightCoords = rightRoute.geometry.coordinates;
+
+      const isClose = (c1, c2) => {
+        const dx = c1[0] - c2[0];
+        const dy = c1[1] - c2[1];
+        // Proximity threshold squared (approx 35 meters)
+        return dx * dx + dy * dy < 0.0000001;
+      };
+
+      const checkOverlapping = (c) => {
+        return leftCoords.some(lc => isClose(c, lc)) || rightCoords.some(rc => isClose(c, rc));
+      };
+
+      const congestedSegments = [];
+      if (congestedCoords.length > 0) {
+        let currentSegment = [congestedCoords[0]];
+        let currentOverlap = checkOverlapping(congestedCoords[0]);
+
+        for (let i = 1; i < congestedCoords.length; i++) {
+          const c = congestedCoords[i];
+          const overlap = checkOverlapping(c);
+
+          if (overlap === currentOverlap) {
+            currentSegment.push(c);
+          } else {
+            // Keep connected by adding boundaries to both adjacent segments
+            currentSegment.push(c);
+            congestedSegments.push({
+              coordinates: currentSegment,
+              overlap: currentOverlap
+            });
+            currentSegment = [c];
+            currentOverlap = overlap;
+          }
+        }
+        congestedSegments.push({
+          coordinates: currentSegment,
+          overlap: currentOverlap
+        });
+      }
+
+      const routeFeatures = [];
+
+      // A. Overlapping congested segments go FIRST (so they are underneath)
+      congestedSegments.forEach(seg => {
+        if (seg.overlap) {
+          routeFeatures.push({
+            type: 'Feature',
+            properties: { kind: 'congested_overlap', color: '#ef4444' },
+            geometry: {
+              type: 'LineString',
+              coordinates: seg.coordinates
+            }
+          });
+        }
+      });
+
+      // B. Detour routes go next (on top of overlap, underneath standard segments)
+      routeFeatures.push({
+        type: 'Feature',
+        properties: { kind: 'detour_left', color: '#06b6d4', label: 'CORRIDOR ALPHA (DETOUR A)' },
+        geometry: leftRoute.geometry
+      });
+      routeFeatures.push({
+        type: 'Feature',
+        properties: { kind: 'detour_right', color: '#6366f1', label: 'CORRIDOR BETA (DETOUR B)' },
+        geometry: rightRoute.geometry
+      });
+
+      // C. Non-overlapping congested segments (the bottleneck) go next
+      congestedSegments.forEach(seg => {
+        if (!seg.overlap) {
+          routeFeatures.push({
             type: 'Feature',
             properties: { kind: 'congested', color: '#ef4444' },
-            geometry: congestedRoute.geometry
-          },
-          {
-            type: 'Feature',
-            properties: { kind: 'detour_left', color: '#06b6d4', label: 'CORRIDOR ALPHA (DETOUR A)' },
-            geometry: leftRoute.geometry
-          },
-          {
-            type: 'Feature',
-            properties: { kind: 'detour_right', color: '#6366f1', label: 'CORRIDOR BETA (DETOUR B)' },
-            geometry: rightRoute.geometry
-          },
-          {
-            type: 'Feature',
-            properties: { kind: 'start', color: '#06b6d4', label: 'DETOUR ENTRY' },
             geometry: {
-              type: 'Point',
-              coordinates: [pStartLon, pStartLat]
+              type: 'LineString',
+              coordinates: seg.coordinates
             }
-          },
-          {
-            type: 'Feature',
-            properties: { kind: 'end', color: '#3b82f6', label: 'RE-JOIN FLOW' },
-            geometry: {
-              type: 'Point',
-              coordinates: [pEndLon, pEndLat]
-            }
-          }
-        ]
+          });
+        }
+      });
+
+      // D. Markers/Points go last
+      routeFeatures.push({
+        type: 'Feature',
+        properties: { kind: 'start', color: '#06b6d4', label: 'DETOUR ENTRY' },
+        geometry: {
+          type: 'Point',
+          coordinates: [pStartLon, pStartLat]
+        }
+      });
+      routeFeatures.push({
+        type: 'Feature',
+        properties: { kind: 'end', color: '#3b82f6', label: 'RE-JOIN FLOW' },
+        geometry: {
+          type: 'Point',
+          coordinates: [pEndLon, pEndLat]
+        }
+      });
+
+      const newGeoJson = {
+        type: 'FeatureCollection',
+        features: routeFeatures
       };
 
       setRouteData(newGeoJson);
+
+      congestedFullCoordsRef.current = congestedRoute.geometry.coordinates;
 
       // Request Wardrop split calculations from the backend
       fetch('/api/routing/split', {
@@ -733,6 +1173,7 @@ export default function MapMonitor({
       if (err.name === 'AbortError') return;
       console.error('OSRM route fetch failed, using fallback geometry:', err);
 
+      congestedFullCoordsRef.current = [[pStartLon, pStartLat], [pEndLon, pEndLat]];
       const fallbackGeoJson = buildFallbackRoutes(pStartLon, pStartLat, pEndLon, pEndLat, pLeftLon, pLeftLat, pRightLon, pRightLat);
       setRouteData(fallbackGeoJson);
 
@@ -1403,7 +1844,7 @@ export default function MapMonitor({
               ) : (
                 <div className="flow-partition-tab-content" style={{ display: 'flex', flexDirection: 'column', gap: '12px', height: '100%', width: '100%', padding: '4px' }}>
                   {wardropSplit ? (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '20px', height: '100%', alignItems: 'center' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr 1fr', gap: '16px', height: '100%', alignItems: 'center' }}>
                       {/* Left Side: SVG diagram */}
                       <div style={{ background: 'rgba(0, 0, 0, 0.25)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px', padding: '14px', position: 'relative', display: 'flex', justifyContent: 'center' }}>
                         <svg width="100%" height="150" viewBox="0 0 420 150" style={{ background: 'transparent' }}>
@@ -1484,6 +1925,22 @@ export default function MapMonitor({
                         </svg>
                       </div>
 
+                      {/* Middle: Mini-map preview */}
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div style={{ fontSize: '9px', fontWeight: '800', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                          Geographical Route
+                        </div>
+                        <div 
+                          className="mini-map-preview-card"
+                          onClick={() => setShowTacticalModal(true)}
+                        >
+                          <div className="mini-map-overlay">
+                            🔍 Click to Zoom Map
+                          </div>
+                          <div ref={miniMapContainerRef} className="mini-map-preview-container" />
+                        </div>
+                      </div>
+
                       {/* Right Side: Math / Equation metrics */}
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '8px' }}>
                         <h4 style={{ fontSize: '11px', fontWeight: '800', textTransform: 'uppercase', color: 'var(--accent-purple)', margin: '0 0 2px 0', letterSpacing: '0.05em' }}>
@@ -1493,16 +1950,16 @@ export default function MapMonitor({
                           <div style={{ padding: '6px 8px', background: 'rgba(6, 182, 212, 0.08)', border: '1px solid rgba(6, 182, 212, 0.25)', borderRadius: '6px' }}>
                             <div style={{ fontWeight: '800', color: '#06b6d4', textTransform: 'uppercase', fontSize: '8px', marginBottom: '2px' }}>Corridor Alpha (Detour A)</div>
                             <div>Allocated: <strong>{wardropSplit.v_a} veh/hr</strong> | Capacity: <strong>{wardropSplit.capacity_a} veh/hr</strong></div>
-                            <div>Free Time $t_0$: <strong>{wardropSplit.t0_a} mins</strong> | Est Time $t_A$: <strong style={{ color: '#06b6d4' }}>{wardropSplit.t_a} mins</strong></div>
+                            <div>Free Time t0: <strong>{wardropSplit.t0_a} mins</strong> | Est Time tA: <strong style={{ color: '#06b6d4' }}>{wardropSplit.t_a} mins</strong></div>
                           </div>
                           <div style={{ padding: '6px 8px', background: 'rgba(99, 102, 241, 0.08)', border: '1px solid rgba(99, 102, 241, 0.25)', borderRadius: '6px' }}>
                             <div style={{ fontWeight: '800', color: '#6366f1', textTransform: 'uppercase', fontSize: '8px', marginBottom: '2px' }}>Corridor Beta (Detour B)</div>
                             <div>Allocated: <strong>{wardropSplit.v_b} veh/hr</strong> | Capacity: <strong>{wardropSplit.capacity_b} veh/hr</strong></div>
-                            <div>Free Time $t_0$: <strong>{wardropSplit.t0_b} mins</strong> | Est Time $t_B$: <strong style={{ color: '#6366f1' }}>{wardropSplit.t_b} mins</strong></div>
+                            <div>Free Time t0: <strong>{wardropSplit.t0_b} mins</strong> | Est Time tB: <strong style={{ color: '#6366f1' }}>{wardropSplit.t_b} mins</strong></div>
                           </div>
                         </div>
                         <div style={{ fontSize: '9px', color: 'var(--text-muted)', lineHeight: '1.4', background: 'rgba(255,255,255,0.02)', padding: '6px', borderRadius: '6px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                          <span style={{ color: 'var(--accent-green)', fontWeight: 'bold' }}>✓ Equalized Travel Times:</span> $t_A \approx t_B$ ({wardropSplit.t_a}m vs {wardropSplit.t_b}m). Backend completed a <strong>3-iteration optimization loop</strong> using BPR Link Delay functions to partition the <strong>{wardropSplit.total_volume} veh/hr</strong> redirected volume.
+                          <span style={{ color: 'var(--accent-green)', fontWeight: 'bold' }}>✓ Equalized Travel Times:</span> tA ≈ tB ({wardropSplit.t_a}m vs {wardropSplit.t_b}m). Backend completed a <strong>3-iteration optimization loop</strong> using BPR Link Delay functions to partition the <strong>{wardropSplit.total_volume} veh/hr</strong> redirected volume.
                         </div>
                       </div>
                     </div>
@@ -1517,6 +1974,96 @@ export default function MapMonitor({
           )}
         </section>
       </div>
+      
+      {showTacticalModal && selectedIncident && wardropSplit && createPortal(
+        <div className="tactical-modal-backdrop">
+          <div className="tactical-modal-header">
+            <div className="tactical-modal-title">
+              <span style={{ fontSize: '18px' }}>🚨</span>
+              <h2 style={{ fontSize: '16px', fontWeight: '800', margin: 0, color: '#ffffff' }}>
+                Tactical Route Explorer: {selectedIncident.id}
+              </h2>
+              <span className="badge-cause" style={{ padding: '2px 8px', borderRadius: '4px', fontSize: '10px', background: 'rgba(6, 182, 212, 0.15)', border: '1px solid rgba(6, 182, 212, 0.3)', color: '#06b6d4', textTransform: 'uppercase', fontWeight: '800' }}>
+                {translateCause(selectedIncident.event_cause, activeLang)}
+              </span>
+            </div>
+            <button 
+              className="tactical-modal-close-btn"
+              onClick={() => setShowTacticalModal(false)}
+            >
+              Close Tactical View
+            </button>
+          </div>
+          <div className="tactical-modal-body">
+            <div className="tactical-map-container">
+              <div ref={tacticalMapContainerRef} style={{ width: '100%', height: '100%' }} />
+              <div style={{ position: 'absolute', top: '16px', left: '16px', background: 'rgba(10, 15, 30, 0.85)', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', padding: '12px', zIndex: 10, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ fontSize: '10px', fontWeight: '800', color: '#fff', textTransform: 'uppercase', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '4px' }}>Route Legend</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '9px', fontWeight: '600' }}>
+                  <span style={{ width: '16px', height: '4px', background: '#ef4444', borderRadius: '2px' }} />
+                  <span style={{ color: 'var(--text-secondary)' }}>Congested Route Section</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '9px', fontWeight: '600' }}>
+                  <span style={{ width: '16px', height: '4px', background: '#06b6d4', borderRadius: '2px' }} />
+                  <span style={{ color: 'var(--text-secondary)' }}>Corridor Alpha (Detour A) - {wardropSplit.split_a}% Split</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '9px', fontWeight: '600' }}>
+                  <span style={{ width: '16px', height: '4px', background: '#6366f1', borderRadius: '2px' }} />
+                  <span style={{ color: 'var(--text-secondary)' }}>Corridor Beta (Detour B) - {wardropSplit.split_b}% Split</span>
+                </div>
+              </div>
+            </div>
+            <div className="tactical-side-panel">
+              <h3 style={{ fontSize: '13px', fontWeight: '800', textTransform: 'uppercase', color: '#06b6d4', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '6px', margin: '0 0 10px 0', letterSpacing: '0.05em' }}>
+                Tactical Analysis
+              </h3>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                <div style={{ fontSize: '9px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '700' }}>Location</div>
+                <div style={{ fontSize: '11px', color: '#fff', fontWeight: '600', lineHeight: '1.4' }}>
+                  {translateAddress(selectedIncident.address, activeLang)}
+                </div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginTop: '6px' }}>
+                <div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '700' }}>Severity</div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#ef4444' }}>{selectedIncident.severity_score}%</div>
+                </div>
+                <div>
+                  <div style={{ fontSize: '9px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: '700' }}>Clearance Est</div>
+                  <div style={{ fontSize: '15px', fontWeight: '800', color: '#fff' }}>{(selectedIncident.estimated_duration || 0).toFixed(1)} hrs</div>
+                </div>
+              </div>
+
+              <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '12px', marginTop: '6px' }}>
+                <h4 style={{ fontSize: '10px', fontWeight: '800', textTransform: 'uppercase', color: 'var(--accent-purple)', margin: '0 0 8px 0', letterSpacing: '0.05em' }}>
+                  Wardrop Equilibrium Splits
+                </h4>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  <div style={{ padding: '8px', background: 'rgba(6, 182, 212, 0.08)', border: '1px solid rgba(6, 182, 212, 0.25)', borderRadius: '6px' }}>
+                    <div style={{ fontWeight: '800', color: '#06b6d4', textTransform: 'uppercase', fontSize: '8px', marginBottom: '4px' }}>Corridor Alpha (Detour A)</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>Flow Allocation: <strong>{wardropSplit.v_a} veh/hr</strong> ({wardropSplit.split_a}%)</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>Design Capacity: <strong>{wardropSplit.capacity_a} veh/hr</strong></div>
+                    <div style={{ fontSize: '10px', marginTop: '2px', color: '#ffffff' }}>Est Travel Time: <strong style={{ color: '#06b6d4' }}>{wardropSplit.t_a} mins</strong></div>
+                  </div>
+                  <div style={{ padding: '8px', background: 'rgba(99, 102, 241, 0.08)', border: '1px solid rgba(99, 102, 241, 0.25)', borderRadius: '6px' }}>
+                    <div style={{ fontWeight: '800', color: '#6366f1', textTransform: 'uppercase', fontSize: '8px', marginBottom: '4px' }}>Corridor Beta (Detour B)</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>Flow Allocation: <strong>{wardropSplit.v_b} veh/hr</strong> ({wardropSplit.split_b}%)</div>
+                    <div style={{ fontSize: '10px', color: 'var(--text-secondary)' }}>Design Capacity: <strong>{wardropSplit.capacity_b} veh/hr</strong></div>
+                    <div style={{ fontSize: '10px', marginTop: '2px', color: '#ffffff' }}>Est Travel Time: <strong style={{ color: '#6366f1' }}>{wardropSplit.t_b} mins</strong></div>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: 'auto', padding: '8px', borderRadius: '6px', background: 'rgba(22, 163, 74, 0.06)', border: '1px solid rgba(22, 163, 74, 0.2)', fontSize: '9px', lineHeight: '1.4', color: 'var(--text-secondary)' }}>
+                <strong style={{ color: 'var(--accent-green)' }}>✓ Wardrop User Equilibrium Met:</strong> Travel times on both corridors have been equalized (t_A ≈ t_B) using BPR Link Delay functions based on a redirected volume of <strong>{wardropSplit.total_volume} veh/hr</strong>.
+              </div>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
