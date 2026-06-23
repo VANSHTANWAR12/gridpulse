@@ -18,7 +18,8 @@ from gridpulse.database import (
 from gridpulse.clustering import perform_dbscan_clustering, update_spatial_hotspots
 from gridpulse.ingestion import generate_mock_event
 from gridpulse.models.forecasting import predict_congestion
-from gridpulse.models.optimization import calculate_optimal_resources
+from gridpulse.models.optimization import calculate_optimal_resources, calculate_wardrop_equilibrium
+
 from gridpulse.rag import RAGEngine
 
 rag_engine = None
@@ -594,6 +595,34 @@ def api_get_learning_analytics():
         'worst_prediction_accuracy': worst,
         'trend_data': trend_data
     }
+
+
+class RoutingSplitPayload(BaseModel):
+    event_id: str
+    severity_score: float
+    attendance: Optional[int] = 0
+    distance_a: float
+    duration_a: float
+    distance_b: float
+    duration_b: float
+
+
+@app.post("/api/routing/split")
+def api_routing_split(payload: RoutingSplitPayload):
+    try:
+        res = calculate_wardrop_equilibrium(
+            event_id=payload.event_id,
+            severity_score=payload.severity_score,
+            attendance=payload.attendance,
+            distance_a=payload.distance_a,
+            duration_a=payload.duration_a,
+            distance_b=payload.distance_b,
+            duration_b=payload.duration_b
+        )
+        return res
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 # Mount frontend web dashboard static files
 if os.environ.get("SERVE_STATIC_ROOT", "true").lower() == "true":

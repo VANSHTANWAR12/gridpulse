@@ -285,7 +285,13 @@ body {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
 }
+.incident-feed::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
 
 .feed-item {
   background-color: var(--bg-card);

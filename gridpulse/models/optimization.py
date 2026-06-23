@@ -141,3 +141,85 @@ def calculate_optimal_resources(severity_score, event_cause, requires_road_closu
         'barricades_needed': barricades,
         'diversion_sign': diversion_sign
     }
+
+
+def calculate_wardrop_equilibrium(event_id, severity_score, attendance, distance_a, duration_a, distance_b, duration_b, alpha=0.15, beta=4):
+    """
+    Rapid 3-iteration optimization loop to equalize travel times (t_a ≈ t_b) on alternate detour routes.
+    Uses the Wardrop User Equilibrium Principle via BPR (Bureau of Public Roads) Link Delay Functions:
+        t_a(v_a) = t0_a * (1 + alpha * (v_a / C_a) ^ beta)
+    """
+    # 1. Estimate total traffic volume to redirect based on severity and attendance
+    severity_val = float(severity_score)
+    attendance_val = int(attendance) if attendance else 0
+    
+    # Base redirected traffic volume: severity_score maps to 200 - 2000 vehicles/hour
+    base_volume = (severity_val / 100.0) * 1500.0 + 300.0
+    
+    # Scale volume by attendance factor (simulating spectator traffic)
+    if attendance_val > 0:
+        base_volume += min(2000.0, attendance_val * 0.15)
+        
+    total_volume = max(200.0, min(4000.0, base_volume))
+    
+    # 2. Determine design capacities dynamically based on event_id hash for stable variety
+    import hashlib
+    h = int(hashlib.md5(str(event_id).encode('utf-8')).hexdigest(), 16)
+    
+    # Capacity range: 1000 - 1800 for Corridor Alpha (A), 800 - 1400 for Corridor Beta (B)
+    capacity_a = float(1000 + (h % 5) * 200) # e.g. 1000, 1200, 1400, 1600, 1800
+    capacity_b = float(800 + ((h // 5) % 4) * 200) # e.g. 800, 1000, 1200, 1400
+    
+    # 3. Free-flow travel times (t0) in minutes
+    t0_a = float(duration_a) / 60.0 # seconds to minutes
+    t0_b = float(duration_b) / 60.0 # seconds to minutes
+    
+    if t0_a <= 0:
+        t0_a = 1.0
+    if t0_b <= 0:
+        t0_b = 1.0
+    
+    # Rapid 3-iteration optimization loop (Bisection) to equalize t_a and t_b
+    low = 0.0
+    high = total_volume
+    v_a = (low + high) / 2.0
+    
+    for iteration in range(3):
+        v_b = total_volume - v_a
+        
+        # BPR Link Delay travel time (minutes)
+        t_a = t0_a * (1.0 + alpha * ((v_a / capacity_a) ** beta))
+        t_b = t0_b * (1.0 + alpha * ((v_b / capacity_b) ** beta))
+        
+        if t_a > t_b:
+            # Route A is slower: shift volume from A to B (decrease v_a)
+            high = v_a
+        else:
+            # Route B is slower: shift volume from B to A (increase v_a)
+            low = v_a
+        v_a = (low + high) / 2.0
+        
+    v_b = total_volume - v_a
+    t_a = t0_a * (1.0 + alpha * ((v_a / capacity_a) ** beta))
+    t_b = t0_b * (1.0 + alpha * ((v_b / capacity_b) ** beta))
+    
+    # Calculate final percentage splits
+    split_a = int(round((v_a / total_volume) * 100))
+    # Keep total split strictly equal to 100
+    split_b = 100 - split_a
+    
+    return {
+        'total_volume': round(total_volume, 1),
+        'capacity_a': capacity_a,
+        'capacity_b': capacity_b,
+        'v_a': round(v_a, 1),
+        'v_b': round(v_b, 1),
+        't0_a': round(t0_a, 2),
+        't0_b': round(t0_b, 2),
+        't_a': round(t_a, 2),
+        't_b': round(t_b, 2),
+        'split_a': split_a,
+        'split_b': split_b,
+        'iterations': 3
+    }
+
