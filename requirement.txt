@@ -3,7 +3,7 @@
 # ==============================================================================
 # Contains all packages needed for production, training, notebook analysis,
 # geospatial visualization, and RAG.
-# Usage: pip install -r requirements.txt
+# Usage: pip install -r requirement.txt
 # ==============================================================================
 
 # Core Web API & Server

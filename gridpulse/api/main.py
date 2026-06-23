@@ -38,7 +38,8 @@ app.add_middleware(
     allow_origins=[
         "https://gridpulse-taupe.vercel.app",
         "http://localhost:5173",
-        "http://localhost:3000"
+        "http://localhost:3000",
+        "http://localhost:8081"
     ],
     allow_credentials=True,
     allow_methods=["*"],

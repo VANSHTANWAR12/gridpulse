@@ -1,0 +1,131 @@
+# ==============================================================================
+# GridPulse — Installation & Execution Instructions
+# ==============================================================================
+
+This document outlines the step-by-step setup and run commands for the GridPulse
+predictive traffic congestion mitigation system, including the Backend, Frontend,
+Mobile, and Model Training components.
+
+---
+
+## 🛠️ Prerequisites
+Ensure you have the following installed:
+1. **Python 3.10+** (recommended: 3.10.x or 3.11.x)
+2. **Node.js** (v18+ / LTS recommended)
+3. **Expo Go app** on your iOS/Android device (to test the Mobile App)
+
+---
+
+## 🔑 1. Environment Configuration (`.env`)
+Create a file named `.env` in the root directory of the project and populate it:
+
+```text
+# Required for 3D Map Rendering
+VITE_MAPTILER_KEY=your_maptiler_api_key_here
+
+# Required for full RAG AI Copilot capabilities (otherwise runs offline TF-IDF)
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# Custom CSV Data Path for historical ingestion (Optional)
+GRIDPULSE_DATA_PATH="path/to/Astram_event_data.csv"
+
+# Server Port (Optional, defaults to 8000)
+PORT=8000
+```
+
+---
+
+## 💻 2. Running Frontend and Backend Services
+
+### 🏁 Method A: All-In-One Local Runner (Windows Only)
+Double-click `run_local.bat` in the root folder, or run it via command prompt:
+```cmd
+run_local.bat
+```
+*This loads environment variables, boots the FastAPI backend server, and runs the React Vite client in development mode automatically.*
+
+---
+
+### 🐍 Method B: Manual Startup
+
+### 1. Backend Server Setup
+From the root directory, configure your python virtual environment and run the backend:
+
+**On Windows (PowerShell):**
+```powershell
+# Create virtual environment
+python -m venv .venv
+
+# Activate virtual environment
+.\.venv\Scripts\Activate.ps1
+
+# Install all-in-one dependencies
+pip install -r requirements.txt
+
+# Launch Backend server
+python run_server.py
+```
+
+**On Linux/macOS:**
+```bash
+# Create virtual environment
+python3 -m venv .venv
+
+# Activate virtual environment
+source .venv/bin/activate
+
+# Install all-in-one dependencies
+pip install -r requirements.txt
+
+# Launch Backend server
+python run_server.py
+```
+*The server will boot, initialize the SQLite database, ingest sample historical records, and run the FastAPI server at `http://localhost:8000`.*
+
+### 2. Frontend React Setup (Vite)
+Open a new terminal tab/window and run:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*This starts the frontend development server, typically available at `http://localhost:5173` or `http://localhost:3000`.*
+
+If you want the backend to serve the static client directly:
+```bash
+cd frontend
+npm install
+npm run build
+cd ..
+# Restart backend (python run_server.py) to statically serve frontend from /web or /frontend/dist
+```
+
+---
+
+## 📱 3. Mobile App Setup (Expo Router)
+GridPulse features a Mobile Tactical Operations platform located under the `mobile/` directory.
+
+To start the mobile app:
+```bash
+cd mobile
+npm install
+
+# Start the Expo developer console
+npm run start
+```
+- **Run on a device**: Scan the QR code generated in the terminal using your phone's camera (iOS) or the **Expo Go** app (Android).
+- **Run on Android Emulator**: Press `a` in the terminal once the builder starts.
+- **Run on iOS Simulator**: Press `i` in the terminal.
+- **Run on Web Browser**: Press `w` in the terminal.
+
+---
+
+## 🤖 4. Retraining Machine Learning Models (Optional)
+If you wish to retrain the multi-model prediction ensemble (CatBoost, LightGBM, XGBoost) and the SentenceTransformer PCA-text encoder:
+
+1. Ensure the virtual environment is active.
+2. Run:
+```bash
+python gridpulse/models/train.py
+```
+*This extracts NLP text embeddings, generates PCA-based text proxies, fits classification and regression ensembles on historical traffic data, and exports serialized joblib weights to the `gridpulse/models/weights/` folder.*
